@@ -4,7 +4,7 @@
 
 </script>
 
-<div class="app">
+<div class="app flex flex-col min-h-screen ">
   <main>
     <slot />
   </main>
@@ -14,13 +14,7 @@
   :global(body) {
 	font-family: 'Public Sans Variable', sans-serif;
   }
-
-  .app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
   @media (min-width: 480px) {
+	
   }
 </style>
