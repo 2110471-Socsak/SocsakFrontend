@@ -1,20 +1,14 @@
 <script>
   import "../app.css";
-  import '@fontsource-variable/public-sans';
-
+  import "@fontsource-variable/public-sans";
 </script>
 
-<div class="app flex flex-col min-h-screen ">
-  <main>
-    <slot />
-  </main>
-</div>
+<main class="app flex flex-col min-h-screen bg-slate-900">
+  <slot />
+</main>
 
 <style>
   :global(body) {
-	font-family: 'Public Sans Variable', sans-serif;
-  }
-  @media (min-width: 480px) {
-	
+    font-family: "Public Sans Variable", sans-serif;
   }
 </style>
