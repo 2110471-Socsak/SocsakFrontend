@@ -88,7 +88,7 @@
 >
   <form
     on:submit={handleOnSubmit}
-    class="w-11/12 md:w-fit h-fit flex justify-center p-6 md:px-12 md:py-8 bg-slate-800 flex-col gap-4 md:gap-8 rounded-lg items-center"
+    class="w-11/12 md:w-fit h-fit flex justify-center p-6 md:px-12 md:py-8 bg-slate-800 flex-col gap-8 rounded-lg items-center"
   >
     <div class="w-full flex justify-center text-base">
       <button
