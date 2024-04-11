@@ -1,23 +1,13 @@
 <script>
-	import Header from './Header.svelte';
-  import ToggleHome from './ToggleHome.svelte';
-	import './styles.css';
+  import "../app.css";
 </script>
 
-<div class="app">
-	<ToggleHome />
-
-	<main>
-		<slot />
-	</main>
-
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
-</div>
+<main class="app flex flex-col min-h-screen bg-slate-900">
+  <slot />
+</main>
 
 <style>
   :global(body) {
-    font-family: "Public Sans Variable", sans-serif;
+    /* font-family: "Public Sans Variable", sans-serif; */
   }
 </style>
