@@ -95,7 +95,7 @@
         on:click={handleClickLogin}
         type="button"
         class={state === "login" ? selectedStyle : defaultStyle}>
-        Login
+        Log In
       </button>
       <button
         on:click={handleClickSignup}
