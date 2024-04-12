@@ -300,9 +300,9 @@
 </script>
 
 <div class="bg-slate-900 w-screen h-screen flex m-0">
-  <div class="w-1/4 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col justify-between">
+  <div class="w-1/4 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col">
     <p class="sticky top-0 text-white text-2xl font-semibold p-8">Socsak</p>
-    <div class="w-full overflow-hidden flex flex-col px-4">
+    <div class="w-full h-full overflow-hidden flex flex-col px-4">
       <div class="collapse collapse-arrow join-item overflow-hidden max-h-full min-h-14">
         <input type="radio" name="my-accordion-4" checked=true /> 
         <p class="sticky collapse-title text-sm font-medium flex gap-[6px]">
