@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  // import type { ActionData } from "./$types";
   import { goto } from "$app/navigation";
 
   //====================STATE==========================//
@@ -15,13 +13,11 @@
 
   function handleClickLogin() {
     state = "login";
-    console.log(`State: ${state}`);
     clearInput();
   }
 
   function handleClickSignup() {
     state = "signup";
-    console.log(`State: ${state}`);
     clearInput();
   }
 
@@ -34,50 +30,32 @@
   async function handleOnSubmit() {
     switch (state) {
       case "login": {
-        console.log("username", username);
-        console.log("password", password);
-        console.log("login user...");
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        // const response = await fetch("/api/add", {
-        //   method: "POST",
-        //   body: JSON.stringify({ username, password }),
-        //   headers: {
-        //     "content-type": "application/json",
-        //   },
-        // });
-        console.log("User login successfully");
-        // const res = await response.json();
-        const res = {
-          success: false,
-          error: "The usename or password is incorrect.",
-        };
+        const response = await fetch("http://localhost:8080/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ username, password }),
+          headers: {
+            "content-type": "application/json",
+          },
+        });
 
+        const res = await response.json();
         if (res.success) goto("/");
-        else error = res.error;
+        else error = res.message;
       }
       case "signup": {
-        console.log("username", username);
-        console.log("password", password);
-        console.log("register user...");
+        
+        const response = await fetch("http://localhost:8080/auth/register", {
+          method: "POST",
+          body: JSON.stringify({ username, password }),
+          headers: {
+            "content-type": "application/json",
+          },
+        });
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        // const response = await fetch("/api/add", {
-        //   method: "POST",
-        //   body: JSON.stringify({ username, password }),
-        //   headers: {
-        //     "content-type": "application/json",
-        //   },
-        // });
-        console.log("User register successfully");
-        // const res = await response.json();
-        const res = {
-          success: false,
-          error: "This username has been used. Please try another.",
-        };
-
+        const res = await response.json();
         if (res.success) goto("/");
-        else error = res.error;
+        else error = res.message;
       }
     }
   }
@@ -129,11 +107,11 @@
         class="text-white text-[12px] md:text-[16px] w-full md:w-[400px] p-4 md:py-3 bg-slate-600 rounded-lg placeholder-slate-300 placeholder:text-base"
       />
       {#if error}
-        <p class="self-start flex sm:hidden text-blue-300 text-base">
+        <p class="self-start text-blue-300 text-base">
           {error}
         </p>
       {:else}
-        <div class="h-[24px] flex sm:hidden"></div>
+        <div class="h-[24px]"></div>
       {/if}
     </div>
     <div class="w-full flex justify-end">
@@ -144,11 +122,4 @@
       >
     </div>
   </form>
-  {#if error}
-    <p class="self-start hidden sm:flex text-blue-300 text-base">
-      {error}
-    </p>
-  {:else}
-    <div class="h-[24px] hidden sm:flex"></div>
-  {/if}
 </div>
