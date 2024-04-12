@@ -30,7 +30,6 @@
   async function handleOnSubmit() {
     switch (state) {
       case "login": {
-
         const response = await fetch("http://localhost:8080/auth/login", {
           method: "POST",
           body: JSON.stringify({ username, password }),
@@ -40,11 +39,13 @@
         });
 
         const res = await response.json();
-        if (res.success) goto("/");
-        else error = res.message;
+        if (res.success) {
+          localStorage.setItem("user", JSON.stringify(res.data));
+          goto("/");
+        } else error = res.message;
+        break;
       }
       case "signup": {
-        
         const response = await fetch("http://localhost:8080/auth/register", {
           method: "POST",
           body: JSON.stringify({ username, password }),
@@ -54,16 +55,17 @@
         });
 
         const res = await response.json();
-        if (res.success) goto("/");
-        else error = res.message;
+        if (res.success) {
+          localStorage.setItem("user", JSON.stringify(res.data));
+          goto("/");
+        } else error = res.message;
+        break;
       }
     }
   }
 </script>
 
-<div
-  class="w-screen h-screen flex self-center items-center justify-center"
->
+<div class="w-screen h-screen flex self-center items-center justify-center">
   <form
     on:submit={handleOnSubmit}
     class="w-11/12 md:w-fit h-fit flex justify-center p-6 md:px-12 md:py-8 bg-slate-800 flex-col gap-8 rounded-lg items-center"
@@ -72,7 +74,8 @@
       <button
         on:click={handleClickLogin}
         type="button"
-        class={state === "login" ? selectedStyle : defaultStyle}>
+        class={state === "login" ? selectedStyle : defaultStyle}
+      >
         Log In
       </button>
       <button
@@ -83,7 +86,9 @@
         Sign Up
       </button>
     </div>
-    <div class="text-white font-semibold text-[24px] md:text-[32px] leading-[32px] md:leading-[48px]">
+    <div
+      class="text-white font-semibold text-[24px] md:text-[32px] leading-[32px] md:leading-[48px]"
+    >
       {state === "login" ? "Log In" : "Sign Up"}
     </div>
     <div class="flex flex-col w-full gap-2">
