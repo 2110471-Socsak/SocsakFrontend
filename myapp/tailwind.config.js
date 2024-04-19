@@ -16,12 +16,13 @@ export default {
           800: '#202127',
           900: '#18191F'
         },
-        blue: {
+        'blue': {
           300: '#A1C4DE',
           500: '#3977BC'
-        }
+        },
+        'green': '#6CCC52'
       }
     }
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require('tailwind-scrollbar')],
 };
