@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      dockerfile: ../Dockerfile
+      context: ./myapp
+    restart: on-failure
+    environment:
+      - BACK_URI='http://localhost:$SPRING_LOCAL_PORT'
+      - SOCKET_URI='ws://localhost:$SPRINT_LOCAL_SOCKET_PORT'
