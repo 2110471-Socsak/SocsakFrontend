@@ -7,5 +7,7 @@ services:
       context: ./myapp
     restart: on-failure
     environment:
-      - BACK_URI='http://localhost:$SPRING_LOCAL_PORT'
-      - SOCKET_URI='ws://localhost:$SPRINT_LOCAL_SOCKET_PORT'
+      - BACK_URI='http://${HOST_IPV4}:$SPRING_LOCAL_PORT'
+      - SOCKET_URI='ws://${HOST_IPV4}:$SPRINT_LOCAL_SOCKET_PORT'
+    ports:
+      - "${HOST_IPV4}:$SVE_LOCAL_PORT:$SVE_DOCKER_PORT"
