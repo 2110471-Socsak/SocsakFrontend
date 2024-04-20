@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { validateMessage, type Message } from "../models/message";
-import { messagesStore } from "../services/+messages";
+import { messagesStore } from "../services/messages";
 
 const socket = io("ws://localhost:3000");
 

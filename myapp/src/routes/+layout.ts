@@ -1,9 +1,9 @@
-import type { PageLoad } from "./$types";
+// import type { PageLoad } from "./$types";
 
-export const ssr = false;
+// export const ssr = false;
 
-export const load = (async () => {
-  return {
-    socket: await import("../socket"),
-  };
-}) satisfies PageLoad;
+// export const load = (async () => {
+//   return {
+//     socket: await import("../socket"),
+//   };
+// }) satisfies PageLoad;

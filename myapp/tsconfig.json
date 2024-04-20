@@ -2,6 +2,7 @@
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
     "sourceMap": true,
+    "sourceMap": true,
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,
@@ -15,7 +16,6 @@
 		"paths": {
 			"$lib/*": ["src/lib/*"],
 			"$routes/*": ["src/routes/*"],
-			"@/*": ["./src/*"]
 		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
