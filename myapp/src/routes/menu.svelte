@@ -10,10 +10,12 @@
   import { getAllGroup } from "../services/group";
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
+  import type { CurrentRoom } from "@/models/message";
+
+  export let currentRoom: CurrentRoom | null;
 
   let username: string = "";
   let privateChatList: Map<string, boolean> = new Map();
-
   let groupChatName: Map<string, string> = new Map();
   let groupChatCount: Map<string, number> = new Map();
 
@@ -35,6 +37,10 @@
   onMount(async () => {
     await fetchRoom();
   });
+
+  function changeRoom(isGroup: boolean, room: string) {
+    currentRoom = { isGroup, room };
+  }
 
   async function fetchRoom() {
     const groupRes: GroupsResponse = await getAllGroup();
@@ -93,25 +99,27 @@
           <ul class="collapse-content overflow-scroll scrollbar-thin px-4">
             {#each [...privateChatList] as [username, online]}
               {#if online}
-                <li
-                  class="text-white h-12 text-sm md:text-base flex justify-between items-center"
+                <button
+                  class="text-white h-12 text-sm md:text-base flex justify-between items-center gap-[6px]"
+                  on:click={() => changeRoom(false, username)}
                 >
                   {username}
                   <span
                     class="badge badge-sm border-green text-green text-[10px]"
                     >Online</span
                   >
-                </li>
+                </button>
               {:else}
-                <li
-                  class="text-white h-12 text-sm md:text-base flex justify-between items-center"
+                <button
+                  class="text-white h-12 text-sm md:text-base flex justify-between items-center gap-[6px]"
+                  on:click={() => changeRoom(false, username)}
                 >
                   {username}
                   <span
                     class="badge badge-sm border-slate-400 text-slate-400 text-[10px]"
                     >Offline</span
                   >
-                </li>
+                </button>
               {/if}
             {/each}
           </ul>
@@ -133,12 +141,13 @@
           </p>
           <ul class="collapse-content overflow-scroll scrollbar-thin px-4">
             {#each [...groupChatCount] as [id, count]}
-              <li
+              <button
                 class="text-white h-12 text-sm md:text-base flex gap-[6px] items-center"
+                on:click={() => changeRoom(true, id)}
               >
                 {groupChatName.get(id)}
                 <span>({count})</span>
-              </li>
+              </button>
             {/each}
           </ul>
         {/if}

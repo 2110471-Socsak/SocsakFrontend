@@ -1,3 +1,8 @@
+export interface CurrentRoom {
+  isGroup: boolean;
+  room: string;
+}
+
 export interface Message {
   id: string;
   sender: string;
@@ -8,7 +13,7 @@ export interface Message {
 export interface GetAllMessageResponse {
   success: boolean;
   message: string;
-  data: Message[]
+  data: Message[];
 }
 
 // export function validateMessage(m: any): Message | undefined {
