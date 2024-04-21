@@ -44,7 +44,11 @@
   <header
     class="text-lg text-white inline-block align-middle border-b border-slate-800"
   >
-    <p class="p-6 pt-0">{currentRoom?.room}</p>
+    {#if currentRoom?.group}
+      <p class="p-6 pt-0">{currentRoom?.name} ({currentRoom.count})</p>
+    {:else}
+      <p class="p-6 pt-0">{currentRoom?.room}</p>
+    {/if}
   </header>
   <ChatPane messageList={messageList || []} />
   <div class="flex gap-3 w-full items-center justify-center">

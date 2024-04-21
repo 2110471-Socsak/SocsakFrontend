@@ -78,7 +78,12 @@
   }
 
   function changeRoom(group: boolean, room: string) {
-    currentRoom = { group, room };
+    currentRoom = { 
+      group, 
+      room, 
+      name: groupChatName.get(room),
+      count: groupChatCount.get(room)
+    };
     ioClient?.emit("join_room", currentRoom);
   }
 </script>

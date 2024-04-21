@@ -1,6 +1,8 @@
 export interface CurrentRoom {
   group: boolean;
   room: string;
+  name?: string;
+  count?: number;
 }
 
 export interface Message {
@@ -16,14 +18,14 @@ export interface GetAllMessageResponse {
   data: Message[];
 }
 
-export function validateMessage(m: any): Message | undefined {
-  if (typeof m !== "object") {
+export function validateMessage(content: any): Message | undefined {
+  if (typeof content !== "object") {
     return;
   }
-  const id = m.id;
-  const sender = m.sender;
-  const sentAt = m.sentAt;
-  const message = m.message;
+  const id = content.id;
+  const sender = content.sender;
+  const sentAt = content.sentAt;
+  const message = content.message;
 
   if (
     typeof message !== "string" ||
@@ -31,13 +33,11 @@ export function validateMessage(m: any): Message | undefined {
     typeof sender !== "string" ||
     typeof sentAt !== "string"
   ) {
-    return;
+    return {
+      id: content.id,
+      sender: content.sender,
+      sentAt: content.sentAt,
+      message: content.message
+    };
   }
-
-  return {
-    id,
-    sender,
-    sentAt,
-    message
-  };
 }
