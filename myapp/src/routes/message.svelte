@@ -60,6 +60,7 @@
   }
 
   function sendMessage(message: string) {
+    if (message.trim() == "") return;
     const io = SocketClient.getInstance();
     if (!currentRoom?.room) return;
     console.log('Sending message:', message);
