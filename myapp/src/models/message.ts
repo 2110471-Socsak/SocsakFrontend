@@ -17,6 +17,11 @@ export interface GetAllMessageResponse {
   message: string;
   data: Message[];
 }
+export interface SendMessageRequest {
+  group: string;
+  room: string;
+  message: string;
+}
 
 export function validateMessage(content: any): Message | undefined {
   if (typeof content !== "object") {
