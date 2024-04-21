@@ -1,8 +1,10 @@
 <script lang="ts" async>
   import type { CurrentRoom, Message } from "@/models/message";
   import { getAllMessages } from "../services/messages";
-  import ChatBubble from "../components/chat/chatBubble.svelte";
   import { onMount } from "svelte";
+  import { SocketClient } from "../socket/SocketClient";
+  import { browser } from "$app/environment";
+  import ChatPane from "../components/chat/chatPane.svelte";
 
   let messageList: Message[] | null = null;
   export let currentRoom: CurrentRoom | null = null;
@@ -15,21 +17,28 @@
       : "Guest";
   }
 
-  onMount(async () => {
-    // for test
-    if (!currentRoom) {
-      return;
-    }
+  $: if (currentRoom) {
+    let page = 0;
+    let limit = 1000;
+    getAllMessages(currentRoom.group, currentRoom.room, page, limit)
+      .then(response => {
+        messageList = response.data;
+        console.log('Fetched messages:', response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching messages:', error);
+      });
+  }
 
-    const response = await getAllMessages(
-      currentRoom.group,
-      currentRoom.room,
-      0,
-      10
-    );
-    messageList = response.data;
-    console.log(messageList);
-  });
+  if (browser) {
+    const io = SocketClient.getInstance();
+
+    io?.on("new_message", (message: Message) => {
+      console.log("Message ma laew: ", message);
+      messageList?.push(message);
+    });
+  }
+
 </script>
 
 <div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
@@ -38,15 +47,7 @@
   >
     <p class="p-6 pt-0">{currentRoom?.room}</p>
   </header>
-  <div class="flex flex-col h-full p-8 pr-24">
-    {#if messageList && messageList.length > 0}
-      {#each messageList as message (message.id)}
-        <ChatBubble {message} />
-      {/each}
-    {:else}
-      <p>No messages to display.</p>
-    {/if}
-  </div>
+  <ChatPane messageList={messageList || []} />
   <div class="flex gap-3 w-full items-center justify-center">
     <input
       type="text"
