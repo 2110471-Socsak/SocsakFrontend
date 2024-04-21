@@ -5,10 +5,14 @@
   import { getAllUser } from "../services/user";
   import { getAllGroup } from "../services/group";
 
-  let username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!).username : "Guest";
+  let username:string = "";
   let privateChatList: User|null = null;
   let groupChatList: Group|null = null;
 
+  if (typeof window !== 'undefined') {
+    username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!).username:"Guest";
+  }
+  
   onMount(async () => {
     privateChatList = await getAllUser();
     console.log(privateChatList);
@@ -21,7 +25,7 @@
 
 </script>
 
-<div class="w-1/4 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col px-8">
+<div class="w-1/5 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col px-4">
   <p class="sticky top-0 text-white text-2xl font-semibold p-8">Socsak</p>
   <div class="w-full h-full overflow-hidden flex flex-col ">
     <div class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14 px-4">
@@ -76,7 +80,7 @@
       {/await}
     </div>
   </div>
-  <div class="sticky bottom-0 text-white text-base bg-slate-900 p-6 flex flex-col gap-2 border-t-[1px] border-slate-700">
+  <div class="sticky bottom-0 text-white text-base bg-slate-900 pt-4 p-8  flex flex-col gap-1 border-t-[1px] border-slate-700">
     <p> Username : {username} </p>
     <p class="text-green text-sm"> (You are online) </p>
   </div>

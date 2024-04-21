@@ -1,5 +1,4 @@
 import type { Group } from '@/models/group';
-import type { User } from '../models/user';
 
 export let data: Group | null = null;
 export let isLoading = false;
