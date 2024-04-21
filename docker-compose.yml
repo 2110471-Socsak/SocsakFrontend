@@ -6,8 +6,8 @@ services:
       dockerfile: ../Dockerfile
       context: ./myapp
     restart: on-failure
-    environment:
-      - BACK_URI='http://${HOST_IPV4}:$SPRING_LOCAL_PORT'
-      - SOCKET_URI='ws://${HOST_IPV4}:$SPRINT_LOCAL_SOCKET_PORT'
     ports:
-      - "${HOST_IPV4}:$SVE_LOCAL_PORT:$SVE_DOCKER_PORT"
+      - "$SVE_LOCAL_PORT:$SVE_DOCKER_PORT"
+    environment:
+      VITE_BACK_URI: http://${HOST_IPV4}:$SPRING_LOCAL_PORT
+      VITE_SOCKET_URI: ws://${HOST_IPV4}:$SPRINT_LOCAL_SOCKET_PORT

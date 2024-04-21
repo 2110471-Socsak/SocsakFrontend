@@ -30,8 +30,9 @@
     async function handleOnSubmit() {
         switch (state) {
             case "login": {
+                console.log(`${import.meta.env.VITE_BACK_URI}/auth/login`);
                 const response = await fetch(
-                    `${process.env.BACK_URI}/auth/login`,
+                    `${import.meta.env.VITE_BACK_URI}/auth/login`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),
@@ -50,7 +51,7 @@
             }
             case "signup": {
                 const response = await fetch(
-                    `${process.env.BACK_URI}/auth/register`,
+                    `${import.meta.env.VITE_BACK_URI}/auth/register`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),
