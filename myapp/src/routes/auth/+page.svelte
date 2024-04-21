@@ -1,5 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import { PUBLIC_BACK_URI } from '$env/static/public'
+
 
     //====================STATE==========================//
     const selectedStyle =
@@ -31,7 +33,7 @@
         switch (state) {
             case "login": {
                 const response = await fetch(
-                    `${process.env.BACK_URI}/auth/login`,
+                    `${PUBLIC_BACK_URI}/auth/login`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),
@@ -50,7 +52,7 @@
             }
             case "signup": {
                 const response = await fetch(
-                    `${process.env.BACK_URI}/auth/register`,
+                    `${PUBLIC_BACK_URI}/auth/register`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),
