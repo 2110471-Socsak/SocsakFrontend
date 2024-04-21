@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
 import { validateMessage, type Message } from "../models/message";
-import { messagesStore } from "../services/messages";
 
 const socket = io(import.meta.env.VITE_SOCKET_URI);
 
@@ -27,7 +26,7 @@ socket.on("messages", (messages) => {
     }
   }
 
-  messagesStore.set(validatedMessages);
+  // messagesStore.set(validatedMessages);
 });
 
 interface SendSuccess {
