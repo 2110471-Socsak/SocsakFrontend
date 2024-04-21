@@ -16,6 +16,7 @@
   export let currentRoom: CurrentRoom | null;
 
   let username: string = "";
+
   let privateChatList: Map<string, boolean> = new Map();
   let groupChatName: Map<string, string> = new Map();
   let groupChatCount: Map<string, number> = new Map();
@@ -78,13 +79,17 @@
   }
 
   function changeRoom(group: boolean, room: string) {
+    const roomToJoin = { 
+      group, 
+      room
+    };
+    ioClient?.emit("join_room", roomToJoin);
     currentRoom = { 
-      isGroup: group, 
-      room: room, 
+      group, 
+      room,
       name: groupChatName.get(room),
       count: groupChatCount.get(room)
     };
-    ioClient?.emit("join_room", currentRoom);
   }
 </script>
 

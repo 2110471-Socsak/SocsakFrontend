@@ -5,7 +5,6 @@
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
   import ChatPane from "../components/chat/chatPane.svelte";
-  import type { SendMessageRequest } from "@/models/message";
   import { Socket } from "socket.io-client";
   import type { RoomCountUpdateData } from "@/models/group";
 

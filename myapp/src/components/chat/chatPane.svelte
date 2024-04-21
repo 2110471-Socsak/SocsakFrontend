@@ -20,6 +20,6 @@
       />
     {/each}
   {:else}
-    <p>No messages to display.</p>
+    <p class="h-full flex items-center justify-center text-slate-300">Start the conversation now !</p>
   {/if}
 </div>

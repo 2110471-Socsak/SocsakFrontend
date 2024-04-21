@@ -1,5 +1,5 @@
 export interface CurrentRoom {
-  isGroup: boolean;
+  group: boolean;
   room: string;
   name?: string;
   count?: number;
