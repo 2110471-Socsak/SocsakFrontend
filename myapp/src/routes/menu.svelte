@@ -79,8 +79,8 @@
 
   function changeRoom(group: boolean, room: string) {
     currentRoom = { 
-      group, 
-      room, 
+      isGroup: group, 
+      room: room, 
       name: groupChatName.get(room),
       count: groupChatCount.get(room)
     };
@@ -108,7 +108,7 @@
             {#each [...privateChatList] as [username, online]}
               {#if online}
                 <button
-                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer focus:bg-slate-700 action:click:cursor-pointer"
+                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer action:bg-slate-700 action:click:cursor-pointer"
                   on:click={() => changeRoom(false, username)}
                 >
                   {username}
