@@ -38,8 +38,7 @@
     const io = SocketClient.getInstance();
 
     io?.on("new_message", (message: Message) => {
-      const updateMessageList = [...messageList];
-      updateMessageList.push(message);
+      const updateMessageList = [message, ...messageList];
       messageList = updateMessageList;
     });
 
