@@ -99,7 +99,7 @@
   <p class="sticky top-0 text-white text-2xl font-semibold p-8">Socsak</p>
   <div class="w-full h-full overflow-hidden flex flex-col">
     <div
-      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14 px-4"
+      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14"
     >
       {#await privateChatList}
         <p>Loading...</p>
@@ -109,7 +109,7 @@
           <p class="sticky collapse-title text-sm font-medium flex gap-[6px]">
             Chats <span>{privateChatList.size}</span>
           </p>
-          <ul class="collapse-content overflow-scroll scrollbar-thin px-4">
+          <ul class="collapse-content overflow-y-scroll scrollbar-thin">
             {#each [...privateChatList] as [username, online]}
               {#if online}
                 <button
@@ -142,7 +142,7 @@
       {/await}
     </div>
     <div
-      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14 px-4"
+      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14"
     >
       {#await groupChatCount}
         <p>Loading...</p>
@@ -152,7 +152,7 @@
           <p class="sticky collapse-title text-sm font-medium flex gap-[6px]">
             Groups <span>{groupChatCount.size}</span>
           </p>
-          <ul class="collapse-content overflow-scroll scrollbar-thin px-4">
+          <ul class="collapse-content overflow-y-scroll scrollbar-thin">
             {#each [...groupChatCount] as [id, count]}
               <button
                 class="text-white h-12 text-sm md:text-base flex gap-[6px] items-center"
