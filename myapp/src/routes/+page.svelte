@@ -1,4 +1,8 @@
-<script>
+<script lang="ts">
+  import { browser } from "$app/environment";
+  import { goto } from "$app/navigation";
+  if (browser && !localStorage.getItem("user")) goto("/auth");
+  
   const privateChatList = [
     {
       "id": "6",
