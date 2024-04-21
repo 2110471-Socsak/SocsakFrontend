@@ -75,19 +75,19 @@
 
 <div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
   <header
-  class="text-lg text-white inline-block align-middle border-b border-slate-800"
+    class="text-lg text-white inline-block align-middle border-b border-slate-800"
   >
-  {#if currentRoom && currentRoom?.group && currentRoom?.name}
-    {#await groupChatCount}
-    <p>Loading...</p>
-    {:then}
-      <p class="p-6 pt-0">{currentRoom.name} ({currentRoom.count})</p>
-    {:catch error}
-      <p class="p-6 pt-0">Error: {error.message}</p>
-    {/await}
-  {:else if currentRoom != null && currentRoom?.room}
-    <p class="p-6 pt-0">{currentRoom.room}</p>
-  {/if}
+    {#if currentRoom && currentRoom?.group && currentRoom?.name}
+      {#await groupChatCount}
+        <p>Loading...</p>
+      {:then}
+        <p class="p-6 pt-0">{currentRoom.name} ({currentRoom.count})</p>
+      {:catch error}
+        <p class="p-6 pt-0">Error: {error.message}</p>
+      {/await}
+    {:else if currentRoom != null && currentRoom?.room}
+      <p class="p-6 pt-0">{currentRoom.room}</p>
+    {/if}
   </header>
   <ChatPane messageList={messageList || []} />
   <div class="flex gap-3 w-full items-center justify-center">
@@ -96,6 +96,9 @@
       placeholder="Enter a message..."
       class="input w-full h-16 m-0 text-white"
       bind:value={messageInput}
+      on:keydown={e => {
+        if (e.key === 'Enter') sendMessage(messageInput);
+      }}
     />
     <button
       class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-[24px]"
