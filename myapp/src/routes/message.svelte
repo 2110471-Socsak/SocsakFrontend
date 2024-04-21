@@ -1,6 +1,7 @@
 <script lang="ts" async>
   import type { Message } from "@/models/message";
   import { getAllMessages } from "../services/messages";
+  import ChatBubble from "../components/chat/chatBubble.svelte";
   import { onMount } from "svelte";
 
   let messageList: Message[] | null = null;
@@ -30,20 +31,13 @@
     <p class="p-6 pt-0">CP888 (10)</p>
   </header>
   <div class="flex flex-col h-full p-8 pr-24">
-    <div class="chat chat-start flex flex-col gap-2">
-      <div class="chat-header">
-        Obi-Wan Kenobi
-      </div>
-      <div class="chat-bubble">You were the Chosen One!</div>
-      <time class="text-xs opacity-50">2 hour ago</time>
-    </div>
-    <div class="chat chat-end flex flex-col gap-2">
-      <div class="chat-header">
-        {username}(You)
-      </div>
-      <div class="chat-bubble">I loved you.</div>
-      <time class="text-xs opacity-50">2 hour ago</time>
-    </div>
+    {#if messageList && messageList.length > 0}
+      {#each messageList as message (message.id)}
+        <ChatBubble {message} />
+      {/each}
+    {:else}
+      <p>No messages to display.</p>
+    {/if}
   </div>
   <div class="flex gap-3 w-full items-center justify-center">
     <input type="text" placeholder="Enter a message..." class="input input-bordered w-full h-12 m-0 text-white" />
