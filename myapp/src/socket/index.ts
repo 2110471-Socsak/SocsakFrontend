@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { validateMessage, type Message } from "../models/message";
 import { messagesStore } from "../services/messages";
 
-const socket = io("ws://localhost:3000");
+const socket = io(import.meta.env.VITE_SOCKET_URI);
 
 socket.on("connect", () => {
   console.log("Successfully connected to socket");

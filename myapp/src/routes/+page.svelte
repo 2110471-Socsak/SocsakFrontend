@@ -7,6 +7,6 @@
   import MessageChannel from './message.svelte'; 
 </script>
 <div class="bg-slate-900 w-screen h-screen flex m-0">
-  <!-- <Menu /> -->
+  <Menu />
   <MessageChannel />
 </div>

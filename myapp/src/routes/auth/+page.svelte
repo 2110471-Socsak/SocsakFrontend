@@ -1,8 +1,5 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { PUBLIC_BACK_URI } from '$env/static/public'
-
-
     //====================STATE==========================//
     const selectedStyle =
         "w-fit px-4 py-2 text-blue-300 border-b-[1.5px] border-blue-300";
@@ -33,7 +30,7 @@
         switch (state) {
             case "login": {
                 const response = await fetch(
-                    `${PUBLIC_BACK_URI}/auth/login`,
+                    `${import.meta.env.VITE_BACK_URI}/auth/login`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),
@@ -52,7 +49,7 @@
             }
             case "signup": {
                 const response = await fetch(
-                    `${PUBLIC_BACK_URI}/auth/register`,
+                    `${import.meta.env.VITE_BACK_URI}/auth/register`,
                     {
                         method: "POST",
                         body: JSON.stringify({ username, password }),

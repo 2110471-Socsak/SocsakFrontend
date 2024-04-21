@@ -1,29 +1,32 @@
 export interface Message {
-  content: string;
-  userid: string;
   id: string;
+  sender: string;
+  sendAt: string;
+  message: string;
 }
 
-export function validateMessage(message: any): Message | undefined {
-  if (typeof message !== "object") {
+export function validateMessage(m: any): Message | undefined {
+  if (typeof m !== "object") {
     return;
   }
-
-  const content = message.content;
-  const userid = message.userid;
-  const id = message.id;
+  const id = m.id;
+  const sender = m.sender;
+  const sendAt = m.sendAt;
+  const message = m.message;
 
   if (
-    typeof content !== "string" ||
-    typeof userid !== "string" ||
-    typeof id !== "string"
+    typeof message !== "string" ||
+    typeof id !== "string" ||
+    typeof sender !== "string" ||
+    typeof sendAt !== "string"
   ) {
     return;
   }
 
   return {
-    content,
-    userid,
     id,
+    sender,
+    sendAt,
+    message
   };
 }
