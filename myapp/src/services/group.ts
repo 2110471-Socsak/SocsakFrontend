@@ -1,33 +1,33 @@
-import type { Group } from '@/models/group';
+import type { GroupsResponse } from "@/models/group";
 
-export let data: Group | null = null;
-export let isLoading = false;
-export let error: string | null = null;
-
-export const getAllGroup = async (): Promise<Group | null> =>   {
-  isLoading = true;
+export const getAllGroup = async (): Promise<GroupsResponse> => {
   try {
-    const $session = JSON.parse(localStorage.getItem('user') || '{}');
-    const response = await fetch(
-      `${import.meta.env.VITE_BACK_URI}/groups`,
-      {
-        method: 'GET',
-        headers: {
-          authorization: `Bearer ${$session.token}`
-        },
-      }
-    );
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+    if (!user) {
+      return {
+        success: false,
+      };
     }
-    const jsonData = await response.json();
-    data = jsonData;
-    console.log(data);
+
+    const response = await fetch(`${import.meta.env.VITE_BACK_URI}/groups`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        success: false,
+      };
+    }
+
+    const data = response.json();
+    return data;
   } catch (error) {
-    console.error('There was a problem fetching the data:', error);
-    error = error;
-  } finally {
-    isLoading = false;
+    return {
+      success: false,
+    };
   }
-  return data;
 };

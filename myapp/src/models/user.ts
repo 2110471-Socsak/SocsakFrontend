@@ -1,12 +1,10 @@
-export interface User {
+export interface UsersResponse {
   success: boolean;
-  message: string;
-  data: {
-    users: [
-      {
-        username: string;
-        online: boolean;
-      }
-    ]
+  message?: string;
+  data?: {
+    users: Array<{
+      username: string;
+      online: boolean;
+    }>;
   };
 }
