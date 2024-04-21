@@ -1,8 +1,9 @@
 <script lang="ts" async>
   import type { Message } from "@/models/message";
-  import { getTimeByTimestamp } from "../../utils/date";
+  import { getTimeByTimestamp, isDayChange } from "../../utils/date";
 
   export let message: Message;
+  export let changeUser: boolean;
 
   let username: string = "";
   let isSelf = false;
@@ -20,9 +21,13 @@
 </script>
 
 <div class={`${isSelf ? "chat-end" : "chat-start"} flex flex-col gap-2`}>
-  <div class="chat-header">{getSenderText()}</div>
-  <div class={` flex ${isSelf ? "flex-row-reverse" : "flex-row"} gap-2 items-center`}>
-    <div class="chat-bubble">{message.message}</div>
-    <time class="text-xs opacity-50 ">{getTimeByTimestamp(message.sentAt)}</time>
+  {#if changeUser}
+    <div class="chat-header text-slate-100">{getSenderText()}</div>
+  {/if}
+  <div
+    class={` flex ${isSelf ? "flex-row-reverse" : "flex-row"} gap-2 items-center`}
+  >
+    <div class="chat-bubble text-slate-100">{message.message}</div>
+    <time class="text-xs opacity-50 text-slate-300">{getTimeByTimestamp(message.sentAt)}</time>
   </div>
 </div>
