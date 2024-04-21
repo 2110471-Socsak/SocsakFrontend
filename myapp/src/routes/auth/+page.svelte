@@ -29,6 +29,7 @@
     async function handleOnSubmit() {
         switch (state) {
             case "login": {
+                console.log(`${import.meta.env.VITE_BACK_URI}/auth/login`);
                 const response = await fetch(
                     `${import.meta.env.VITE_BACK_URI}/auth/login`,
                     {
