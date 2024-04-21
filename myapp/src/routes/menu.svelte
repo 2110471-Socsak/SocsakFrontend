@@ -11,6 +11,7 @@
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
   import type { CurrentRoom } from "@/models/message";
+  import { Socket, io } from "socket.io-client";
 
   export let currentRoom: CurrentRoom | null;
 
@@ -38,10 +39,6 @@
     await fetchRoom();
   });
 
-  function changeRoom(isGroup: boolean, room: string) {
-    currentRoom = { isGroup, room };
-  }
-
   async function fetchRoom() {
     const groupRes: GroupsResponse = await getAllGroup();
     const newNameMapper = new Map();
@@ -54,29 +51,35 @@
     groupChatCount = newCountMapper;
   }
 
+  let ioClient: Socket | null = null;
   if (browser) {
-    const io = SocketClient.getInstance();
+    ioClient = SocketClient.getInstance();
 
-    io?.on("user_connected", (username: string) => {
+    ioClient?.on("user_connected", (username: string) => {
       const newPrivateList = new Map(privateChatList);
       newPrivateList.set(username, true);
       privateChatList = newPrivateList;
     });
 
-    io?.on("user_disconnected", async (username: string) => {
+    ioClient?.on("user_disconnected", async (username: string) => {
       const newPrivateList = new Map(privateChatList);
       newPrivateList.set(username, false);
       privateChatList = newPrivateList;
       await fetchRoom();
     });
 
-    io?.on("room_count_updated", (room: RoomCountUpdateData) => {
+    ioClient?.on("room_count_updated", (room: RoomCountUpdateData) => {
       const newCountMapper = new Map(groupChatCount);
       if (newCountMapper.has(room.groupId)) {
         newCountMapper.set(room.groupId, room.count);
       }
       groupChatCount = newCountMapper;
     });
+  }
+
+  function changeRoom(group: boolean, room: string) {
+    currentRoom = { group, room };
+    ioClient?.emit("join_room", currentRoom);
   }
 </script>
 

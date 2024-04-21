@@ -5,7 +5,6 @@
   import { onMount } from "svelte";
 
   let messageList: Message[] | null = null;
-  let isGroup: boolean | null = null;
   export let currentRoom: CurrentRoom | null = null;
   // const user = localStorage.getItem("user");
   let username: string = "";
@@ -23,7 +22,7 @@
     }
 
     const response = await getAllMessages(
-      currentRoom.isGroup,
+      currentRoom.group,
       currentRoom.room,
       0,
       10
