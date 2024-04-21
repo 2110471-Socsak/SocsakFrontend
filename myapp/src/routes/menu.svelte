@@ -65,7 +65,6 @@
     });
 
     io?.on("room_count_updated", (room: RoomCountUpdateData) => {
-      console.log("update count", groupChatName.get(room.groupId));
       const newCountMapper = new Map(groupChatCount);
       if (newCountMapper.has(room.groupId)) {
         newCountMapper.set(room.groupId, room.count);
