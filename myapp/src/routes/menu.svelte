@@ -108,7 +108,7 @@
             {#each [...privateChatList] as [username, online]}
               {#if online}
                 <button
-                  class="text-white h-12 text-sm md:text-base flex justify-between items-center gap-[6px]"
+                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer focus:bg-slate-700 action:click:cursor-pointer"
                   on:click={() => changeRoom(false, username)}
                 >
                   {username}
@@ -119,7 +119,7 @@
                 </button>
               {:else}
                 <button
-                  class="text-white h-12 text-sm md:text-base flex justify-between items-center gap-[6px]"
+                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer focus:bg-slate-700 action:click:cursor-pointer"
                   on:click={() => changeRoom(false, username)}
                 >
                   {username}

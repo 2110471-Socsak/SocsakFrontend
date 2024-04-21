@@ -1,5 +1,5 @@
 export interface CurrentRoom {
-  group: boolean;
+  isGroup: boolean;
   room: string;
   name?: string;
   count?: number;
@@ -17,11 +17,6 @@ export interface GetAllMessageResponse {
   message: string;
   data: Message[];
 }
-export interface SendMessageRequest {
-  group: string;
-  room: string;
-  message: string;
-}
 
 export function validateMessage(content: any): Message | undefined {
   if (typeof content !== "object") {
@@ -29,14 +24,14 @@ export function validateMessage(content: any): Message | undefined {
   }
   const id = content.id;
   const sender = content.sender;
-  const sentAt = content.sentAt;
+  const sendAt = content.sendAt;
   const message = content.message;
 
   if (
     typeof message !== "string" ||
     typeof id !== "string" ||
     typeof sender !== "string" ||
-    typeof sentAt !== "string"
+    typeof sendAt !== "string"
   ) {
     return {
       id: content.id,
