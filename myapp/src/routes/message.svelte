@@ -5,10 +5,15 @@
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
   import ChatPane from "../components/chat/chatPane.svelte";
+  import type { SendMessageRequest } from "@/models/message";
+  import { Socket } from "socket.io-client";
+  import type { RoomCountUpdateData } from "@/models/group";
 
   let messageList: Message[] = [];
   export let currentRoom: CurrentRoom | null = null;
   let username: string = "";
+  let messageInput: string = "";
+  let groupChatCount: Map<string, number> = new Map();
 
   if (typeof window !== "undefined") {
     username = localStorage.getItem("user")
@@ -29,6 +34,7 @@
       });
   }
 
+  let io: Socket | null = null;
   if (browser) {
     const io = SocketClient.getInstance();
 
@@ -37,28 +43,65 @@
       updateMessageList.push(message);
       messageList = updateMessageList;
     });
+
+    io?.on("room_count_updated", (room: RoomCountUpdateData) => {
+      const newCountMapper = new Map(groupChatCount);
+      if (newCountMapper.has(room.groupId)) {
+        newCountMapper.set(room.groupId, room.count);
+      }
+      groupChatCount = newCountMapper;
+      if (currentRoom?.room) {
+        currentRoom = {
+        group : currentRoom.group,
+        room: currentRoom.room,
+        name: currentRoom.name,
+        count: room.count,
+      };
+      }
+    });
   }
+
+  function sendMessage(message: string) {
+    const io = SocketClient.getInstance();
+    if (!currentRoom?.room) return;
+    console.log('Sending message:', message);
+    io?.emit("send_message", {
+      group: currentRoom.group,
+      room: currentRoom.room,
+      message: message,
+    });
+    messageInput = "";
+  }
+
 </script>
 
 <div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
   <header
-    class="text-lg text-white inline-block align-middle border-b border-slate-800"
+  class="text-lg text-white inline-block align-middle border-b border-slate-800"
   >
-    {#if currentRoom?.group}
-      <p class="p-6 pt-0">{currentRoom?.name} ({currentRoom.count})</p>
-    {:else}
-      <p class="p-6 pt-0">{currentRoom?.room}</p>
-    {/if}
+  {#if currentRoom && currentRoom?.group && currentRoom?.name}
+    {#await groupChatCount}
+    <p>Loading...</p>
+    {:then}
+      <p class="p-6 pt-0">{currentRoom.name} ({currentRoom.count})</p>
+    {:catch error}
+      <p class="p-6 pt-0">Error: {error.message}</p>
+    {/await}
+  {:else if currentRoom != null && currentRoom?.room}
+    <p class="p-6 pt-0">{currentRoom.room}</p>
+  {/if}
   </header>
   <ChatPane messageList={messageList || []} />
   <div class="flex gap-3 w-full items-center justify-center">
     <input
       type="text"
       placeholder="Enter a message..."
-      class="input input-bordered w-full h-12 m-0 text-white"
+      class="input w-full h-16 m-0 text-white"
+      bind:value={messageInput}
     />
     <button
       class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-[24px]"
+      on:click={() => sendMessage(messageInput)}
     >
       <svg
         width="28"
