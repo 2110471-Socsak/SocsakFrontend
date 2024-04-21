@@ -6,9 +6,8 @@
   import { browser } from "$app/environment";
   import ChatPane from "../components/chat/chatPane.svelte";
 
-  let messageList: Message[] | null = null;
+  let messageList: Message[] = [];
   export let currentRoom: CurrentRoom | null = null;
-  // const user = localStorage.getItem("user");
   let username: string = "";
 
   if (typeof window !== "undefined") {
@@ -34,11 +33,11 @@
     const io = SocketClient.getInstance();
 
     io?.on("new_message", (message: Message) => {
-      console.log("Message ma laew: ", message);
-      messageList?.push(message);
+      const updateMessageList = [...messageList];
+      updateMessageList.push(message);
+      messageList = updateMessageList;
     });
   }
-
 </script>
 
 <div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
