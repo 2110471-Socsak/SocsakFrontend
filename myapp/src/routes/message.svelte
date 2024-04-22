@@ -73,7 +73,7 @@
 </script>
 
 <div
-  class={`w-full h-full justify-between p-8 pr-16 flex flex-col ${isLoadingChat ? "cursor-wait" : ""}`}
+  class={`w-full h-full justify-between p-8 pr-16 flex flex-col ${currentRoom && isLoadingChat ? "cursor-wait" : ""}`}
 >
   <header
     class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
