@@ -50,11 +50,11 @@
       groupChatCount = newCountMapper;
       if (currentRoom?.room) {
         currentRoom = {
-        group : currentRoom.group,
-        room: currentRoom.room,
-        name: currentRoom.name,
-        count: room.count,
-      };
+          group: currentRoom.group,
+          room: currentRoom.room,
+          name: currentRoom.name,
+          count: room.count,
+        };
       }
     });
   }
@@ -70,10 +70,11 @@
     });
     messageInput = "";
   }
-
 </script>
 
-<div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
+<div
+  class={`w-full h-full justify-between p-8 pr-16 flex flex-col ${isLoadingChat ? "cursor-wait" : ""}`}
+>
   <header
     class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
   >
@@ -99,16 +100,22 @@
   <div class="flex gap-3 w-full items-center justify-center">
     <input
       type="text"
-      placeholder="Enter a message..."
+      placeholder={!currentRoom
+        ? ""
+        : isLoadingChat
+          ? "Loading..."
+          : "Enter a message..."}
       class="input w-full h-16 m-0 text-white"
       bind:value={messageInput}
       on:keydown={(e) => {
         if (e.key === "Enter") sendMessage(messageInput);
       }}
+      disabled={!currentRoom || isLoadingChat}
     />
     <button
       class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-[24px]"
       on:click={() => sendMessage(messageInput)}
+      disabled={!currentRoom || isLoadingChat}
     >
       <svg
         width="28"
