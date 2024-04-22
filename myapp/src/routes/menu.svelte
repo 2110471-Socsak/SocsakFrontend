@@ -69,6 +69,15 @@
       await fetchRoom();
     });
 
+    ioClient?.on("group_created", (group: Group) => {
+      const newNameMapper = new Map(groupChatName);
+      const newCountMapper = new Map(groupChatCount);
+      newNameMapper.set(group.id, group.name);
+      newCountMapper.set(group.id, 0);
+      groupChatName = newNameMapper;
+      groupChatCount = newCountMapper;
+    });
+
     ioClient?.on("room_count_updated", (room: RoomCountUpdateData) => {
       const newCountMapper = new Map(groupChatCount);
       if (newCountMapper.has(room.groupId)) {
@@ -78,30 +87,41 @@
     });
   }
 
+  let createName: string;
+  async function handleCreateGroup() {
+    const ack = await ioClient?.emitWithAck("create_group", {
+      name: createName,
+    });
+    createName = "";
+    if (ack.id) {
+      changeRoom(true, ack.id);
+    }
+  }
+
   function changeRoom(group: boolean, room: string) {
-    const roomToJoin = { 
-      group, 
-      room
+    const roomToJoin = {
+      group,
+      room,
     };
     ioClient?.emit("join_room", roomToJoin);
-    currentRoom = { 
-      group, 
+    currentRoom = {
+      group,
       room,
       name: groupChatName.get(room),
-      count: groupChatCount.get(room)
+      count: groupChatCount.get(room),
     };
   }
 
   function handleLogout() {
     if (typeof window !== "undefined") {
       localStorage.clear();
-      window.location.href = '/auth';
+      window.location.href = "/auth";
     }
   }
 </script>
 
 <div
-  class="w-1/5 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col px-4"
+  class="w-1/4 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col px-4"
 >
   <p class="sticky top-0 text-white text-2xl font-semibold p-8">Socsak</p>
   <div class="w-full h-full overflow-hidden flex flex-col">
@@ -160,6 +180,45 @@
             Groups <span>{groupChatCount.size}</span>
           </p>
           <ul class="collapse-content overflow-y-scroll scrollbar-thin">
+            <form
+              class="flex flex-row justify-between items-center py-[8px] px-[4px] gap-[8px]"
+              on:submit={() => handleCreateGroup()}
+            >
+              <input
+                class="input w-full"
+                placeholder="Create new group"
+                bind:value={createName}
+              />
+              <button
+                class="min-w-8 min-h-8 flex items-center justify-center bg-blue-500 rounded-[24px] disabled:hidden"
+                type="submit"
+                disabled={!createName || createName === ""}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!-- Plus sign path -->
+                  <path
+                    d="M8 3V13"
+                    stroke="white"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 8H13"
+                    stroke="white"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg></button
+              >
+            </form>
             {#each [...groupChatCount] as [id, count]}
               <button
                 class="text-white h-12 text-sm md:text-base flex gap-[6px] items-center"
