@@ -5,9 +5,10 @@ services:
     build:
       dockerfile: ../Dockerfile
       context: ./myapp
+      args:
+        VITE_BACK_URI: http://${HOST_IPV4}:$SPRING_LOCAL_PORT
+        VITE_SOCKET_URI: ws://${HOST_IPV4}:$SPRING_LOCAL_SOCKET_PORT
+
     restart: on-failure
     ports:
       - "$SVE_LOCAL_PORT:$SVE_DOCKER_PORT"
-    environment:
-      VITE_BACK_URI: http://${HOST_IPV4}:$SPRING_LOCAL_PORT
-      VITE_SOCKET_URI: ws://${HOST_IPV4}:$SPRINT_LOCAL_SOCKET_PORT
