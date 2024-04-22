@@ -21,9 +21,8 @@
     <Menu bind:currentRoom />
     <MessageChannel {currentRoom} />
   {:else}
-    <div class="flex-1 w-full h-full self-center justify-self-center">
-      <div>Loading...</div>
-      <span class="loading loading-dots loading-lg"></span>
+    <div class="flex-1 w-full h-full flex flex-col justify-center items-center">
+      <span class="loading loading-dots w-32"></span>
     </div>
   {/if}
 </div>
