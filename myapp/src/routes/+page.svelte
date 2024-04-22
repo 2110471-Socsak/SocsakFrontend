@@ -22,7 +22,7 @@
     <MessageChannel {currentRoom} />
   {:else}
     <div class="flex-1 w-full h-full flex flex-col justify-center items-center">
-      <span class="loading loading-dots w-32"></span>
+      <span class="loading loading-dots w-12"></span>
     </div>
   {/if}
 </div>

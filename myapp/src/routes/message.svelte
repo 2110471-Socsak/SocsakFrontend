@@ -13,6 +13,7 @@
   let username: string = "";
   let messageInput: string = "";
   let groupChatCount: Map<string, number> = new Map();
+  let isLoadingChat: boolean = true;
 
   if (typeof window !== "undefined") {
     username = localStorage.getItem("user")
@@ -23,14 +24,13 @@
   $: if (currentRoom) {
     let page = 0;
     let limit = 1000;
+    isLoadingChat = true;
     getAllMessages(currentRoom.group, currentRoom.room, page, limit)
-      .then(response => {
+      .then((response) => {
         messageList = response.data;
-        console.log('Fetched messages:', response.data);
+        isLoadingChat = false;
       })
-      .catch(error => {
-        console.error('Error fetching messages:', error);
-      });
+      .catch((error) => {});
   }
 
   let io: Socket | null = null;
@@ -63,7 +63,6 @@
     if (message.trim() == "") return;
     const io = SocketClient.getInstance();
     if (!currentRoom?.room) return;
-    console.log('Sending message:', message);
     io?.emit("send_message", {
       group: currentRoom.group,
       room: currentRoom.room,
@@ -76,7 +75,7 @@
 
 <div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
   <header
-    class="text-lg text-white inline-block align-middle border-b border-slate-800"
+    class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
   >
     {#if currentRoom && currentRoom?.group && currentRoom?.name}
       {#await groupChatCount}
@@ -90,15 +89,21 @@
       <p class="p-6 pt-0">{currentRoom.room}</p>
     {/if}
   </header>
-  <ChatPane messageList={messageList || []} />
+  {#if currentRoom && isLoadingChat}
+    <div class="flex-1 w-full h-full flex flex-col justify-center items-center">
+      <span class="loading loading-dots w-12"></span>
+    </div>
+  {:else}
+    <ChatPane messageList={messageList || []} />
+  {/if}
   <div class="flex gap-3 w-full items-center justify-center">
     <input
       type="text"
       placeholder="Enter a message..."
       class="input w-full h-16 m-0 text-white"
       bind:value={messageInput}
-      on:keydown={e => {
-        if (e.key === 'Enter') sendMessage(messageInput);
+      on:keydown={(e) => {
+        if (e.key === "Enter") sendMessage(messageInput);
       }}
     />
     <button
