@@ -136,7 +136,7 @@
           <p class="sticky collapse-title text-sm font-medium flex items-center gap-2">
             Chats <span>{privateChatList.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-hide scrollbar-thin">
+          <ul class="collapse-content overflow-y-scroll scrollbar-hide">
             {#each [...privateChatList] as [username, online]}
               {#if online}
                 <button
