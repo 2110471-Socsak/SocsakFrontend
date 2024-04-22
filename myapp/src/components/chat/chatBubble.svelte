@@ -25,9 +25,9 @@
     <div class="chat-header text-slate-100">{getSenderText()}</div>
   {/if}
   <div
-    class={` flex ${isSelf ? "flex-row-reverse" : "flex-row"} gap-2 items-center`}
+    class={` flex ${isSelf ? "flex-row-reverse" : "flex-row"} gap-2 items-end`}
   >
-    <div class="chat-bubble text-slate-100 max-w-sm">{message.message}</div>
+    <div class="chat-bubble bg-slate-700 text-slate-100 max-w-2xl">{message.message}</div>
     <time class="text-xs opacity-50 text-slate-300">{getTimeByTimestamp(message.sentAt)}</time>
   </div>
 </div>

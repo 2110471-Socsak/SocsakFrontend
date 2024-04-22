@@ -51,7 +51,7 @@
   }
 </script>
 
-<div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
+<div class="w-3/4 h-full justify-between p-8 pr-16 flex flex-col">
   <header
     class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
   >
@@ -59,7 +59,7 @@
       {#await groupChatCount}
         <p>Loading...</p>
       {:then}
-        <p class="p-6 pt-0">{currentRoom.name} ({currentRoom.count})</p>
+        <p class="w-full p-6 pt-0 h-auto overflow-hidden text-pretty break-words">{currentRoom.name} ({currentRoom.count}) </p>
       {:catch error}
         <p class="p-6 pt-0">Error: {error.message}</p>
       {/await}
@@ -68,37 +68,40 @@
     {/if}
   </header>
   <ChatPane {currentRoom} />
-  <div class="flex gap-3 w-full items-center justify-center">
-    <input
-      type="text"
-      placeholder="Enter a message..."
-      class="input w-full h-16 m-0 text-white"
-      bind:value={messageInput}
-      on:keydown={(e) => {
-        if (e.key === "Enter") sendMessage(messageInput);
-      }}
-      disabled={!currentRoom}
-    />
-    <button
-      class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-[24px]"
-      on:click={() => sendMessage(messageInput)}
-      disabled={!currentRoom}
-    >
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+  {#if currentRoom}
+  <div class="pr-8">
+    <div class="flex gap-4 rounded-lg w-full items-center justify-center py-2 px-4 bg-slate-800">
+      <input
+        type="text"
+        placeholder={"Enter a message..."}
+        class="w-full min-h-10 m-0 text-white bg-slate-800 focus:outline-none action:none"
+        bind:value={messageInput}
+        on:keydown={(e) => {
+          if (e.key === "Enter") sendMessage(messageInput);
+        }}
+      />
+      <button
+        class="w-9 h-9 flex items-center justify-center bg-blue-300 hover:bg-blue-500 rounded-[24px]"
+        on:click={() => sendMessage(messageInput)}
       >
-        <path
-          d="M5.8335 11.6667L14.0002 3.5M14.0002 3.5L22.1668 11.6667M14.0002 3.5V24.5"
-          stroke="white"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </button>
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.8335 11.6667L14.0002 3.5M14.0002 3.5L22.1668 11.6667M14.0002 3.5V24.5"
+            stroke="#18191F"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
+  {/if}
 </div>
+

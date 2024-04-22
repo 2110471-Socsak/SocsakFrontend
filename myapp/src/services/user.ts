@@ -1,4 +1,4 @@
-import type { UsersResponse } from "src/models/user";
+import type { UsersResponse } from "../models/user";
 
 export const getAllUser = async (): Promise<UsersResponse> => {
   try {

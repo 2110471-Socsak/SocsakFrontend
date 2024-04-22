@@ -132,8 +132,8 @@
         <p>Loading...</p>
       {:then}
         {#if privateChatList}
-          <input type="radio" name="my-accordion-4" checked={true} />
-          <p class="sticky collapse-title text-sm font-medium flex gap-[6px]">
+          <input type="radio" name="my-accordion-4" checked={true} class="h-4"/>
+          <p class="sticky collapse-title text-sm font-medium flex items-center gap-2">
             Chats <span>{privateChatList.size}</span>
           </p>
           <ul class="collapse-content overflow-y-scroll scrollbar-thin">
@@ -169,62 +169,47 @@
       {/await}
     </div>
     <div
-      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14"
+      class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-12"
     >
       {#await groupChatCount}
         <p>Loading...</p>
       {:then}
         {#if groupChatCount}
-          <input type="radio" name="my-accordion-4" />
-          <p class="sticky collapse-title text-sm font-medium flex gap-[6px]">
+          <input type="radio" name="my-accordion-4"/>
+          <p class="sticky collapse-title text-sm font-medium flex items-center gap-2 h-8 overflow-hidden">
             Groups <span>{groupChatCount.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-thin">
+          <ul class="collapse-content overflow-y-scroll scrollbar-hidden pt-0 p-4 pb-8">
             <form
-              class="flex flex-row justify-between items-center py-[8px] px-[4px] gap-[8px]"
-              on:submit={() => handleCreateGroup()}
-            >
-              <input
-                class="input w-full"
-                placeholder="Create new group"
-                bind:value={createName}
-              />
+            class="sticky rounded flex flex-col justify-between text-sm text-slate-700 items-center gap-2 pb-6 border-slate-700"
+            on:submit={() => handleCreateGroup()}
+              > 
+              <div class="flex flex-row w-full text-slate-300 justify-between items-center min-h-8">
+              <p>Create new group</p>
               <button
-                class="min-w-8 min-h-8 flex items-center justify-center bg-blue-500 rounded-[24px] disabled:hidden"
+                class="flex items-center justify-center bg-blue-300 hover:bg-blue-500 rounded disabled:hidden py-1 px-2 gap-1 text-slate-900 text-sm"
                 type="submit"
                 disabled={!createName || createName === ""}
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!-- Plus sign path -->
-                  <path
-                    d="M8 3V13"
-                    stroke="white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M3 8H13"
-                    stroke="white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg></button
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 2V10M10 6L2 6" stroke="#18191F" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Create
+              </button
               >
-            </form>
+              </div>
+              <input
+              class="input w-full h-10 bg-slate-800 text-white text-wrap p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-10"
+              placeholder="Enter a group name..."
+              bind:value={createName}
+              />
+              </form>
             {#each [...groupChatCount] as [id, count]}
               <button
-                class="text-white h-12 text-sm md:text-base flex gap-[6px] items-center"
+                class="text-white w-full overflow-hidden text-ellipsis h-12 text-sm md:text-base flex gap-[6px] items-center p-2"
                 on:click={() => changeRoom(true, id)}
               >
-                {groupChatName.get(id)}
+                <p class="truncate">{groupChatName.get(id)}</p>
                 <span>({count})</span>
               </button>
             {/each}
@@ -236,19 +221,20 @@
     </div>
   </div>
   <div
-    class="sticky bottom-0 text-white text-base bg-slate-900 pt-4 px-2 pb-8 flex justify-between border-t-[1px] border-slate-700"
+    class="sticky bottom-0 text-white text-base bg-slate-900 py-4 px-2 flex flex-col justify-between"
   >
-    <div class="flex flex-col gap-1">
-      <p>Username : {username}</p>
-      <p class="text-green text-sm">(You are online)</p>
+    <div class="flex w-full items-center border-t-[1px] border-slate-700 py-4 justify-between">
+      <div class="flex flex-col gap-1">
+        <p>Username : {username}</p>
+      </div>
+      <button
+        class="w-fit inline-block bg-slate-600 rounded text-slate-300 text-sm h-[28px] py-1 px-2 hover:bg-red-500 hover:cursor-pointer hover:text-white focus:bg-red-500 focus:text-white"
+        on:click={() => {
+          handleLogout();
+        }}
+      >
+        Log out
+      </button>
     </div>
-    <button
-      class="h-fit inline-block bg-slate-600 rounded-lg text-sm p-2"
-      on:click={() => {
-        handleLogout();
-      }}
-    >
-      Log out
-    </button>
   </div>
 </div>
