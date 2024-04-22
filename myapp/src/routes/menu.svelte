@@ -91,6 +91,13 @@
       count: groupChatCount.get(room)
     };
   }
+
+  function handleLogout() {
+    if (typeof window !== "undefined") {
+      localStorage.clear();
+      window.location.href = '/auth';
+    }
+  }
 </script>
 
 <div
@@ -170,9 +177,19 @@
     </div>
   </div>
   <div
-    class="sticky bottom-0 text-white text-base bg-slate-900 pt-4 p-8 flex flex-col gap-1 border-t-[1px] border-slate-700"
+    class="sticky bottom-0 text-white text-base bg-slate-900 pt-4 px-2 pb-8 flex justify-between border-t-[1px] border-slate-700"
   >
-    <p>Username : {username}</p>
-    <p class="text-green text-sm">(You are online)</p>
+    <div class="flex flex-col gap-1">
+      <p>Username : {username}</p>
+      <p class="text-green text-sm">(You are online)</p>
+    </div>
+    <button
+      class="h-fit inline-block bg-slate-600 rounded-lg text-sm p-2"
+      on:click={() => {
+        handleLogout();
+      }}
+    >
+      Log out
+    </button>
   </div>
 </div>
