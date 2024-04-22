@@ -1,19 +1,15 @@
 <script lang="ts" async>
   import type { CurrentRoom, Message } from "@/models/message";
-  import { getAllMessages } from "../services/messages";
-  import { onMount } from "svelte";
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
   import ChatPane from "../components/chat/chatPane.svelte";
   import { Socket } from "socket.io-client";
   import type { RoomCountUpdateData } from "@/models/group";
 
-  let messageList: Message[] = [];
   export let currentRoom: CurrentRoom | null = null;
   let username: string = "";
   let messageInput: string = "";
   let groupChatCount: Map<string, number> = new Map();
-  let isLoadingChat: boolean = true;
 
   if (typeof window !== "undefined") {
     username = localStorage.getItem("user")
@@ -21,26 +17,9 @@
       : "Guest";
   }
 
-  $: if (currentRoom) {
-    let page = 0;
-    let limit = 1000;
-    isLoadingChat = true;
-    getAllMessages(currentRoom.group, currentRoom.room, page, limit)
-      .then((response) => {
-        messageList = response.data;
-        isLoadingChat = false;
-      })
-      .catch((error) => {});
-  }
-
   let io: Socket | null = null;
   if (browser) {
     const io = SocketClient.getInstance();
-
-    io?.on("new_message", (message: Message) => {
-      const updateMessageList = [message, ...messageList];
-      messageList = updateMessageList;
-    });
 
     io?.on("room_count_updated", (room: RoomCountUpdateData) => {
       const newCountMapper = new Map(groupChatCount);
@@ -72,9 +51,7 @@
   }
 </script>
 
-<div
-  class={`w-full h-full justify-between p-8 pr-16 flex flex-col ${currentRoom && isLoadingChat ? "cursor-wait" : ""}`}
->
+<div class="w-full h-full justify-between p-8 pr-16 flex flex-col">
   <header
     class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
   >
@@ -90,32 +67,22 @@
       <p class="p-6 pt-0">{currentRoom.room}</p>
     {/if}
   </header>
-  {#if currentRoom && isLoadingChat}
-    <div class="flex-1 w-full h-full flex flex-col justify-center items-center">
-      <span class="loading loading-dots w-12"></span>
-    </div>
-  {:else}
-    <ChatPane messageList={messageList || []} />
-  {/if}
+  <ChatPane {currentRoom} />
   <div class="flex gap-3 w-full items-center justify-center">
     <input
       type="text"
-      placeholder={!currentRoom
-        ? ""
-        : isLoadingChat
-          ? "Loading..."
-          : "Enter a message..."}
+      placeholder="Enter a message..."
       class="input w-full h-16 m-0 text-white"
       bind:value={messageInput}
       on:keydown={(e) => {
         if (e.key === "Enter") sendMessage(messageInput);
       }}
-      disabled={!currentRoom || isLoadingChat}
+      disabled={!currentRoom}
     />
     <button
       class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-[24px]"
       on:click={() => sendMessage(messageInput)}
-      disabled={!currentRoom || isLoadingChat}
+      disabled={!currentRoom}
     >
       <svg
         width="28"
