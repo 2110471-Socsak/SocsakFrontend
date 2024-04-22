@@ -53,13 +53,15 @@
 
 <div class="w-3/4 h-full justify-between p-8 pr-16 flex flex-col">
   <header
-    class={`text-lg text-white inline-block align-middle border-b border-slate-800 ${!currentRoom ? "hidden" : ""}`}
+    class={`text-lg text-white inline-block align-middle border-b border-slate-800
+    ${!currentRoom ? "hidden" : ""}`}
   >
     {#if currentRoom && currentRoom?.group && currentRoom?.name}
       {#await groupChatCount}
         <p>Loading...</p>
       {:then}
-        <p class="w-full p-6 pt-0 h-auto overflow-hidden text-pretty break-words">{currentRoom.name} ({currentRoom.count}) </p>
+        <p class="text-xl font-medium w-full p-6 pt-0 h-auto overflow-hidden text-pretty break-words">
+          {currentRoom.name} ({currentRoom.count}) </p>
       {:catch error}
         <p class="p-6 pt-0">Error: {error.message}</p>
       {/await}

@@ -27,7 +27,7 @@
   <div
     class={` flex ${isSelf ? "flex-row-reverse" : "flex-row"} gap-2 items-end`}
   >
-    <div class="chat-bubble bg-slate-700 text-slate-100 max-w-2xl">{message.message}</div>
+    <div class="chat-bubble overflow-hidden text-pretty break-words bg-slate-700 text-slate-100 max-w-2xl">{message.message}</div>
     <time class="text-xs opacity-50 text-slate-300">{getTimeByTimestamp(message.sentAt)}</time>
   </div>
 </div>

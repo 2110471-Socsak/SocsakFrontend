@@ -104,12 +104,19 @@
       room,
     };
     ioClient?.emit("join_room", roomToJoin);
-    currentRoom = {
-      group,
-      room,
-      name: groupChatName.get(room),
-      count: groupChatCount.get(room),
-    };
+    if (group) {
+      currentRoom = {
+        group,
+        room,
+        name: groupChatName.get(room),
+        count: groupChatCount.get(room),
+      };
+    } else {
+      currentRoom = {
+        group,
+        room,
+      };
+    }
   }
 
   function handleLogout() {
@@ -123,7 +130,7 @@
 <div
   class="w-1/4 h-sreen mr-auto bg-slate-900 z-10 overflow-hidden flex flex-col px-4"
 >
-  <p class="sticky top-0 text-white text-2xl font-semibold p-8">Socsak</p>
+  <p class="sticky top-0 text-white text-3xl font-semibold p-4 pt-8">Socsak</p>
   <div class="w-full h-full overflow-hidden flex flex-col">
     <div
       class="collapse collapse-arrow join-item rounded-none overflow-hidden max-h-full min-h-14"
@@ -132,35 +139,31 @@
         <p>Loading...</p>
       {:then}
         {#if privateChatList}
-          <input type="radio" name="my-accordion-4" checked={true} class="h-4"/>
+          <input type="radio" name="my-accordion-4" checked={true}/>
           <p class="sticky collapse-title text-sm font-medium flex items-center gap-2">
             Chats <span>{privateChatList.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-hide">
+          <ul class="text-white collapse-content overflow-y-scroll scrollbar-hide">
             {#each [...privateChatList] as [username, online]}
-              {#if online}
-                <button
-                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer action:bg-slate-700 action:click:cursor-pointer"
-                  on:click={() => changeRoom(false, username)}
-                >
-                  {username}
+              <button
+                class={`h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer
+                  ${currentRoom?.room === username ? "bg-slate-700" : "bg-slate-900"}
+                  `}
+                on:click={() => changeRoom(false, username)}
+              >
+                {username}
+                {#if online}
                   <span
-                    class="badge badge-sm border-green text-green text-[10px]"
+                    class="badge badge-sm bg-transparent border-green text-green text-[10px]"
                     >Online</span
                   >
-                </button>
-              {:else}
-                <button
-                  class="text-white h-12 w-full p-2 rounded text-sm md:text-base flex justify-between items-center gap-[6px] hover:bg-slate-800 hover:cursor-pointer focus:bg-slate-700 action:click:cursor-pointer"
-                  on:click={() => changeRoom(false, username)}
-                >
-                  {username}
+                {:else}
                   <span
-                    class="badge badge-sm border-slate-400 text-slate-400 text-[10px]"
+                    class="badge badge-sm bg-transparent border-slate-400 text-slate-400 text-[10px]"
                     >Offline</span
                   >
-                </button>
-              {/if}
+                {/if}
+              </button>
             {/each}
           </ul>
         {/if}
@@ -179,34 +182,12 @@
           <p class="sticky collapse-title text-sm font-medium flex items-center gap-2 h-8 overflow-hidden">
             Groups <span>{groupChatCount.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-hide pt-0 p-4 pb-8">
-            <form
-            class="sticky rounded flex flex-col justify-between text-sm text-slate-700 items-center gap-2 pb-6 border-slate-700"
-            on:submit={() => handleCreateGroup()}
-              > 
-              <div class="flex flex-row w-full text-slate-300 justify-between items-center min-h-8">
-              <p>Create new group</p>
-              <button
-                class="flex items-center justify-center bg-blue-300 hover:bg-blue-500 rounded disabled:hidden py-1 px-2 gap-1 text-slate-900 text-sm"
-                type="submit"
-                disabled={!createName || createName === ""}
-              >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 2V10M10 6L2 6" stroke="#18191F" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Create
-              </button
-              >
-              </div>
-              <input
-              class="input w-full h-10 bg-slate-800 text-white text-wrap p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-10"
-              placeholder="Enter a group name..."
-              bind:value={createName}
-              />
-              </form>
+          <ul class="w-full text-white collapse-content overflow-y-scroll scrollbar-hide pt-0 p-4 pb-8">
             {#each [...groupChatCount] as [id, count]}
               <button
-                class="text-white w-full overflow-hidden text-ellipsis h-12 text-sm md:text-base flex gap-[6px] items-center p-2"
+                class={`w-full overflow-hidden text-ellipsis h-12 text-sm md:text-base flex gap-[6px] items-center p-2 rounded hover:bg-slate-800 hover:cursor-pointer 
+                  ${currentRoom?.room === id ? "bg-slate-700" : "bg-slate-900"}
+                  `}
                 on:click={() => changeRoom(true, id)}
               >
                 <p class="truncate">{groupChatName.get(id)}</p>
@@ -221,8 +202,31 @@
     </div>
   </div>
   <div
-    class="sticky bottom-0 text-white text-base bg-slate-900 py-4 px-2 flex flex-col justify-between"
+    class="sticky bottom-0 text-white text-base bg-slate-900 pb-4 px-2 flex flex-col justify-between"
   >
+    <form
+    class="sticky flex flex-col justify-between items-center gap-2 pt-4 pb-6 border-slate-700  border-t-[1px] border-slate-700 "
+    on:submit={() => handleCreateGroup()}
+      > 
+      <div class="flex flex-row w-full text-slate-300 justify-between items-center">
+      <p class=" text-base text-white h-[28px]">Create new group</p>
+      <button
+        class="flex items-center justify-center bg-blue-300 hover:bg-blue-500 rounded disabled:hidden py-[2px] px-[6px] gap-[2px] text-slate-900 text-[12px] font-medium"
+        type="submit"
+        disabled={!createName || createName === ""}
+      >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 2V10M10 6L2 6" stroke="#18191F" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Create
+      </button>
+      </div>
+      <input
+      class="input w-full h-10 bg-slate-800 text-white text-wrap p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-10"
+      placeholder="Enter a group name..."
+      bind:value={createName}
+      />
+    </form>
     <div class="flex w-full items-center border-t-[1px] border-slate-700 py-4 justify-between">
       <div class="flex flex-col gap-1">
         <p>Username : {username}</p>

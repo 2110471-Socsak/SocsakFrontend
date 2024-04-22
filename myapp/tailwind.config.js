@@ -5,8 +5,9 @@ export default {
     extend: {
       fontFamily: ['Public Sans', 'Noto Sans Thai', 'ui-sans-serif', 'system-ui'],
       colors:{
+        'white' : '#D6D7DF',
         'slate': {
-          100: '#FFFFFF',
+          100: '#D6D7DF',
           200: '#D1D5DB',
           300: '#94979D',
           400: '#727A85',
