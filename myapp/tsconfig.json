@@ -13,8 +13,6 @@
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
 		"paths": {
-			"$lib/*": ["src/lib/*"],
-			"$routes/*": ["src/routes/*"],
 			"@/*": ["./src/*"]
 		}
 	}
