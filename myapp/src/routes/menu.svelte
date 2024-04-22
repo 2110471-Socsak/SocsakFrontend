@@ -136,7 +136,7 @@
           <p class="sticky collapse-title text-sm font-medium flex items-center gap-2">
             Chats <span>{privateChatList.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-thin">
+          <ul class="collapse-content overflow-y-scroll scrollbar-hide scrollbar-thin">
             {#each [...privateChatList] as [username, online]}
               {#if online}
                 <button
@@ -179,7 +179,7 @@
           <p class="sticky collapse-title text-sm font-medium flex items-center gap-2 h-8 overflow-hidden">
             Groups <span>{groupChatCount.size}</span>
           </p>
-          <ul class="collapse-content overflow-y-scroll scrollbar-hidden pt-0 p-4 pb-8">
+          <ul class="collapse-content overflow-y-scroll scrollbar-hide pt-0 p-4 pb-8">
             <form
             class="sticky rounded flex flex-col justify-between text-sm text-slate-700 items-center gap-2 pb-6 border-slate-700"
             on:submit={() => handleCreateGroup()}

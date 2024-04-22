@@ -38,7 +38,7 @@
   </div>
 {:else}
   <div
-    class="flex flex-col-reverse h-full p-8 pr-24 overflow-y-scroll gap-4"
+    class="flex flex-col-reverse h-full p-8 pr-24 overflow-y-scroll scrollbar-hide gap-4"
   >
     {#if messageList && messageList.length > 0}
       {#each messageList as message, index (message.id)}
