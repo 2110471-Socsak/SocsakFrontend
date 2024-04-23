@@ -26,6 +26,7 @@
     const io = SocketClient.getInstance();
 
     io?.on("new_message", (message: Message) => {
+      if (messageList.some(m => m.id === message.id)) return;
       const updateMessageList = [message, ...messageList];
       messageList = updateMessageList;
     });
