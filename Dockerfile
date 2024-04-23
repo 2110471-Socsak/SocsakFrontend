@@ -9,11 +9,14 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-ARG VITE_BACK_URI
-ARG VITE_SOCKET_URI
+ARG VBU
+ARG VSU
 
-ENV VITE_BACK_URI=$VITE_BACK_URI
-ENV VITE_SOCKET_URI=$VITE_SOCKET_URI
+RUN echo -e\
+    'VITE_BACK_URI=$VBU\n'\
+    'VITE_SOCKET_URI=$VSU\n' \
+    >> .env.production
+
 
 RUN npm run build
 

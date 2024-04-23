@@ -6,8 +6,8 @@ services:
       dockerfile: ../Dockerfile
       context: ./myapp
       args:
-        VITE_BACK_URI: http://${HOST_IPV4}:$SPRING_LOCAL_PORT
-        VITE_SOCKET_URI: ws://${HOST_IPV4}:$SPRING_LOCAL_SOCKET_PORT
+        - VBU=http://$HOST_IPV4:$SPRING_LOCAL_PORT
+        - VSU=ws://$HOST_IPV4:$SPRING_LOCAL_SOCKET_PORT
 
     restart: on-failure
     ports:
