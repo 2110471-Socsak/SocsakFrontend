@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import type { CurrentRoom } from "@/models/message";
 
   let isLoading: boolean = true;
@@ -14,12 +13,13 @@
   import MessageChannel from "./message.svelte";
 
   let currentRoom: CurrentRoom | null = null;
+  let groupChatCount: Map<string, number> = new Map();
 </script>
 
 <div class="bg-slate-900 w-screen h-screen flex m-0">
   {#if !isLoading}
-    <Menu bind:currentRoom />
-    <MessageChannel {currentRoom} />
+    <Menu bind:currentRoom bind:groupChatCount />
+    <MessageChannel currentRoom={currentRoom} groupChatCount={groupChatCount} />
   {:else}
     <div class="flex-1 w-full h-full flex flex-col justify-center items-center">
       <span class="loading loading-dots w-12"></span>

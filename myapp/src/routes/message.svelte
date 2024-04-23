@@ -1,41 +1,17 @@
 <script lang="ts" async>
-  import type { CurrentRoom, Message } from "@/models/message";
+  import type { CurrentRoom } from "@/models/message";
   import { SocketClient } from "../socket/SocketClient";
-  import { browser } from "$app/environment";
   import ChatPane from "../components/chat/chatPane.svelte";
-  import { Socket } from "socket.io-client";
-  import type { RoomCountUpdateData } from "@/models/group";
 
-  export let currentRoom: CurrentRoom | null = null;
+  export let currentRoom: CurrentRoom | null;
+  export let groupChatCount: Map<string, number>;
   let username: string = "";
   let messageInput: string = "";
-  let groupChatCount: Map<string, number> = new Map();
 
   if (typeof window !== "undefined") {
     username = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user")!).username
       : "Guest";
-  }
-
-  let io: Socket | null = null;
-  if (browser) {
-    const io = SocketClient.getInstance();
-
-    io?.on("room_count_updated", (room: RoomCountUpdateData) => {
-      const newCountMapper = new Map(groupChatCount);
-      if (newCountMapper.has(room.groupId)) {
-        newCountMapper.set(room.groupId, room.count);
-      }
-      groupChatCount = newCountMapper;
-      if (currentRoom?.room) {
-        currentRoom = {
-          group: currentRoom.group,
-          room: currentRoom.room,
-          name: currentRoom.name,
-          count: room.count,
-        };
-      }
-    });
   }
 
   function sendMessage(message: string) {
@@ -61,7 +37,7 @@
         <p>Loading...</p>
       {:then}
         <p class="text-xl font-medium w-full p-6 pt-0 h-auto overflow-hidden text-pretty break-words">
-          {currentRoom.name} ({currentRoom.count}) </p>
+          {currentRoom.name} ({groupChatCount.get(currentRoom.room)}) </p>
       {:catch error}
         <p class="p-6 pt-0">Error: {error.message}</p>
       {/await}

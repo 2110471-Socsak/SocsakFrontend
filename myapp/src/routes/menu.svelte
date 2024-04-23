@@ -11,15 +11,15 @@
   import { SocketClient } from "../socket/SocketClient";
   import { browser } from "$app/environment";
   import type { CurrentRoom } from "@/models/message";
-  import { Socket, io } from "socket.io-client";
+  import { Socket } from "socket.io-client";
 
   export let currentRoom: CurrentRoom | null;
+  export let groupChatCount: Map<string, number>;
 
   let username: string = "";
 
   let privateChatList: Map<string, boolean> = new Map();
   let groupChatName: Map<string, string> = new Map();
-  let groupChatCount: Map<string, number> = new Map();
 
   if (typeof window !== "undefined") {
     username = localStorage.getItem("user")
@@ -109,7 +109,6 @@
         group,
         room,
         name: groupChatName.get(room),
-        count: groupChatCount.get(room),
       };
     } else {
       currentRoom = {
@@ -205,7 +204,7 @@
     class="sticky bottom-0 text-white text-base bg-slate-900 pb-4 px-2 flex flex-col justify-between"
   >
     <form
-    class="sticky flex flex-col justify-between items-center gap-2 pt-4 pb-6 border-slate-700  border-t-[1px] border-slate-700 "
+    class="sticky flex flex-col justify-between items-center gap-2 pt-4 pb-6 border-slate-700  border-t-[1px]"
     on:submit={() => handleCreateGroup()}
       > 
       <div class="flex flex-row w-full text-slate-300 justify-between items-center">

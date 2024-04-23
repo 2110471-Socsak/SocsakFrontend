@@ -2,7 +2,6 @@ export interface CurrentRoom {
   group: boolean;
   room: string;
   name?: string;
-  count?: number;
 }
 
 export interface Message {
