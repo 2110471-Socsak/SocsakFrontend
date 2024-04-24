@@ -1,6 +1,5 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-
     //====================STATE==========================//
     const selectedStyle =
         "w-fit px-4 py-2 text-blue-300 border-b-[1.5px] border-blue-300";
@@ -107,7 +106,7 @@
                 autocomplete="username"
                 bind:value={username}
                 required
-                class="text-white text-[12px] md:text-[16px] w-full md:w-[400px] p-4 md:py-3 bg-slate-600 rounded-lg placeholder-slate-300 placeholder:text-base"
+                class="text-white text-[12px] md:text-[16px] w-full md:w-[400px] p-4 md:py-3 bg-slate-600 rounded-lg placeholder-slate-300 placeholder:text-base disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
             />
             <input
                 name="password"
@@ -116,10 +115,10 @@
                 autocomplete="current-password"
                 bind:value={password}
                 required
-                class="text-white text-[12px] md:text-[16px] w-full md:w-[400px] p-4 md:py-3 bg-slate-600 rounded-lg placeholder-slate-300 placeholder:text-base"
+                class="text-white text-[12px] md:text-[16px] w-full md:w-[400px] p-4 md:py-3 bg-slate-600 rounded-lg placeholder-slate-300 placeholder:text-base disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
             />
             {#if error}
-                <p class="self-start text-blue-300 text-base">
+                <p class="self-start text-red-400 text-base">
                     {error}
                 </p>
             {:else}

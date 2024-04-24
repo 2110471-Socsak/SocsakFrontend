@@ -6,8 +6,8 @@
   <slot />
 </main>
 
-<style>
+<!-- <style>
   :global(body) {
-    /* font-family: "Public Sans Variable", sans-serif; */
+    font-family: "Public Sans Variable", sans-serif;
   }
-</style>
+</style> -->
